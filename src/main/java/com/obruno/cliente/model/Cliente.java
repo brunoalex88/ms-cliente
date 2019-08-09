@@ -1,4 +1,4 @@
-package model;
+package com.obruno.cliente.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
