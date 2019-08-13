@@ -1,5 +1,6 @@
 package com.obruno.cliente.controller;
 
+import com.obruno.cliente.exception.ClienteNotFoundException;
 import com.obruno.cliente.model.Cliente;
 import com.obruno.cliente.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +40,27 @@ public class ClienteController {
     }
 
     @DeleteMapping
-    public void remover(@RequestBody @Valid Cliente cliente) {
+    public ResponseEntity<Long> remover(@RequestBody @Valid Cliente clienteRemover) {
+        Cliente cliente = clienteRepository.findById(clienteRemover.getId()).orElse(null);
+
+        if (cliente == null) {
+            throw new ClienteNotFoundException(clienteRemover.getId());
+        }
+
         clienteRepository.delete(cliente);
+        return new ResponseEntity<>(cliente.getId(), HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping(value = "/{id}")
-    public void removerPorId(@PathVariable("id") Long id) {
+    public ResponseEntity<Long> removerPorId(@PathVariable Long id) {
+        Cliente cliente = clienteRepository.findById(id).orElse(null);
+
+        if (cliente == null) {
+            throw new ClienteNotFoundException(id);
+        }
+
         clienteRepository.deleteById(id);
+        return new ResponseEntity<>(id, HttpStatus.NO_CONTENT);
     }
 
 }
