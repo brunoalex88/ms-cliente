@@ -3,6 +3,7 @@ package com.obruno.cliente.controller;
 import com.obruno.cliente.exception.ClienteNotFoundException;
 import com.obruno.cliente.model.Cliente;
 import com.obruno.cliente.repository.ClienteRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/cliente")
+@Log4j2
 public class ClienteController {
 
     @Autowired
@@ -36,7 +38,12 @@ public class ClienteController {
 
     @PutMapping
     public ResponseEntity<Cliente> alterar(@RequestBody @Valid Cliente cliente) {
-        return ResponseEntity.status(HttpStatus.OK).body(clienteRepository.save(cliente));
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(clienteRepository.save(cliente));
+        } catch (Exception e) {
+            log.error(e.getLocalizedMessage());
+            return ResponseEntity.ok().body(null);
+        }
     }
 
     @DeleteMapping
