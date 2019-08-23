@@ -38,12 +38,7 @@ public class ClienteController {
 
     @PutMapping
     public ResponseEntity<Cliente> alterar(@RequestBody @Valid Cliente cliente) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(clienteRepository.save(cliente));
-        } catch (Exception e) {
-            log.error(e.getLocalizedMessage());
-            return ResponseEntity.ok().body(null);
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(clienteRepository.save(cliente));
     }
 
     @DeleteMapping
