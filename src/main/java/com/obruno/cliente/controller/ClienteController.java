@@ -28,6 +28,10 @@ public class ClienteController {
 
     @GetMapping(value = "/{id}")
     public Optional<Cliente> listarPorId(@PathVariable Long id) {
+        Cliente cliente = clienteRepository.findById(id).orElse(null);
+        if (cliente == null) {
+            throw new ClienteNotFoundException(id);
+        }
         return clienteRepository.findById(id);
     }
 
