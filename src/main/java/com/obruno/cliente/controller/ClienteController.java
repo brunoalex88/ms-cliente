@@ -45,26 +45,12 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.OK).body(clienteRepository.save(cliente));
     }
 
-    @DeleteMapping
-    public ResponseEntity<Long> remover(@RequestBody @Valid Cliente clienteRemover) {
-        Cliente cliente = clienteRepository.findById(clienteRemover.getId()).orElse(null);
-
-        if (cliente == null) {
-            throw new ClienteNotFoundException(clienteRemover.getId());
-        }
-
-        clienteRepository.delete(cliente);
-        return new ResponseEntity<>(cliente.getId(), HttpStatus.NO_CONTENT);
-    }
-
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Long> removerPorId(@PathVariable Long id) {
         Cliente cliente = clienteRepository.findById(id).orElse(null);
-
         if (cliente == null) {
             throw new ClienteNotFoundException(id);
         }
-
         clienteRepository.deleteById(id);
         return new ResponseEntity<>(id, HttpStatus.NO_CONTENT);
     }
